@@ -1,6 +1,12 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
 
+const formatDate = (date)=> {
+    const newDate = date.toLocaleDateString()
+
+    return newDate
+}
+
 const thoughtSchema = new Schema(
     //COLUMNS
     {
@@ -14,22 +20,21 @@ const thoughtSchema = new Schema(
             type: Date,
             default: Date.now,
             //Use a getter method to format the timestamp on query
+            get: (timestamp)=> formatDate(timestamp)
         },
         username: {
             type: String,
             required: true,
         },
         reactions: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: reactionSchema
-            }
+            reactionSchema
         ]
     },
     //TABLE OPTIONS
     {
         toJSON: {
-            virtuals: true
+            virtuals: true,
+             getters: true
         },
         id: false
     }
