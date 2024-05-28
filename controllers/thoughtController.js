@@ -71,18 +71,37 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+    // HOW DO I ACTUALLY CREATE THE REACTION THOUGH?
     async addReactionToThought(req, res) {
         try {
-
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $push: { reactions: req.params.reactionsId } },
+                { runValidators: true, new: true }
+            )
+            if (!thought) {
+                return res.status(404).json(`Use a correct thoughtId in order to add a reaction`)
+            }
+            res.status(200).json(`Thought with id ${thought._id} has a reaction added to it`)
         } catch (error) {
-
+            console.log(error)
+            res.status(500).json(error)
         }
     },
     async deleteReactionFromThought(req, res) {
         try {
-
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $pull: { reactions: req.params.reactionsId } },
+                { runValidators: true, new: true }
+            )
+            if (!thought) {
+                return res.status(404).json(`Use a correct thoughtId in order to delete a reaction`)
+            }
+            res.status(200).json(`Thought with id ${thought._id} has a reaction deleted from it`)
         } catch (error) {
-
+            console.log(error)
+            res.status(500).json(error)
         }
     },
 }
