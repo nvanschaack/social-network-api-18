@@ -76,13 +76,13 @@ module.exports = {
         try {
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
-                { $push: { reactions: req.params.reactionsId } },
+                { $push: { reactions: req.body } },
                 { runValidators: true, new: true }
             )
             if (!thought) {
                 return res.status(404).json(`Use a correct thoughtId in order to add a reaction`)
             }
-            res.status(200).json(`Thought with id ${thought._id} has a reaction added to it`)
+            res.status(200).json(thought)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -92,7 +92,7 @@ module.exports = {
         try {
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
-                { $pull: { reactions: req.params.reactionsId } },
+                { $pull: { reactions: {reactionId: req.params.reactionsId} } },
                 { runValidators: true, new: true }
             )
             if (!thought) {
