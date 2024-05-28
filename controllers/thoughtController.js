@@ -12,7 +12,7 @@ module.exports = {
     },
     async getOneThought(req, res) {
         try {
-            const oneThought = await Thought.findOne({ _id: req.params.thoughtId }).populate('reactions')
+            const oneThought = await Thought.findOne({ _id: req.params.thoughtId })
             if (!oneThought) {
                 return res.json(`Incorrect thoughtId`)
             }
@@ -30,6 +30,7 @@ module.exports = {
             const updateUserByAddingThought = await User.findOneAndUpdate(
                 { _id: req.body.userId },
                 { $push: { thoughts: createThought._id } },
+                // runValidators is used to make sure any validator on the Models is being used (the match property in the email field in this case)
                 { runValidators: true, new: true }
             )
             if (!updateUserByAddingThought) {
@@ -77,6 +78,7 @@ module.exports = {
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
                 { $push: { reactions: req.body } },
+                // if i dont have new: true, it will present the data as if it were never updated.
                 { runValidators: true, new: true }
             )
             if (!thought) {
@@ -92,7 +94,7 @@ module.exports = {
         try {
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
-                { $pull: { reactions: {reactionId: req.params.reactionsId} } },
+                { $pull: { reactions: { reactionId: req.params.reactionsId } } },
                 { runValidators: true, new: true }
             )
             if (!thought) {
