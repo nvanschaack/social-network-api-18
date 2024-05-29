@@ -1,5 +1,6 @@
 # Social Network API
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 ![Walkthrough Video](https://drive.google.com/file/d/1kD6Ixuwi9vculLsqMZqPNd444voHU_e7/view)
 ## Description
 This is a back-end application that encapsulates important topics of building APIs. This is an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. This app specifically uses Express.js for routing, a MongoDB database, and the Mongoose ODM. 
